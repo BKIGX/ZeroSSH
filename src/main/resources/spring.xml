@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd"
+>
+    
+    <context:annotation-config/>
+    <context:component-scan base-package="robertli.zero.*"/>
+    <aop:aspectj-autoproxy/>
+    
+    <!-- database.properties can be save at out of the app -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <!--<value>file://~/app.properties</value>-->
+            <value>classpath:app.properties</value>
+        </property>
+    </bean>
+    
+    <import resource="spring-database.xml"/>
+    <import resource="spring-transaction.xml"/>
+    
+    <bean id="emailSender" class="robertli.zero.core.impl.EmailSenderImpl">
+        <property name="host" value="${email.host}" />
+        <property name="from" value="${email.from}" />
+        <property name="username" value="${email.username}" />
+        <property name="password" value="${email.password}" />
+        <property name="port" value="${email.port}" />
+        <property name="test" value="${email.test}" />
+    </bean>
+    
+    <bean id="fileManager" class="robertli.zero.core.impl.FileManagerImpl">
+        <property name="basePath" value="${file_storage.basepath}"/>
+    </bean>
+    
+    <bean id="appConfiguration" class="robertli.zero.core.impl.AppConfigurationImpl">
+        <property name="md5Salt" value="${app.md5_salt}"/>
+        <property name="timeZone" value="${app.time_zone}"/>
+        <property name="initAdminName" value="${app.init_admin_name}"/>
+        <property name="initAdminPassword" value="${app.init_admin_password}"/>
+    </bean>
+    
+    <bean id="webConfiguration" class="robertli.zero.core.impl.WebConfigurationImpl">
+        <property name="domain" value="${web.domain}"/>
+        <property name="imageActionUrl" value="${web.image_action_url}"/>
+        <property name="googleSigninClientId" value="${web.google_signin_client_id}"/>
+    </bean>
+            
+    <aop:config>
+<!--        
+        <aop:pointcut id="transfer" expression="execution(* robertli.temp.service.UserService.transfer(..))"/>
+        <aop:pointcut id="withinService" expression="within(robertli.temp.service.*)"/>
+        <aop:pointcut id="pt1" expression="within(robertli.temp.service.*)"/>
+        
+                <aop:aspect ref="testAspect">
+                    <aop:around pointcut-ref="transfer" method="watch" />
+                    <aop:before pointcut-ref="withinService" method="test"  />
+                </aop:aspect>
+        -->
+        
+    </aop:config>
+    
+</beans>
+
+
