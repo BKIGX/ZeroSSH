@@ -54,7 +54,7 @@
 
 ### 数据库的创建
 建库语句：
-create database zero default character set utf8mb4 default collate utf8mb4_general_ci;
+create database zero_ssh default character set utf8mb4 default collate utf8mb4_general_ci;
 * 为了支持苹果系统中长度为4字节的utf8表情符号，我们将默认的字符集设置为utf8mb4
 * 在使用了utf8mb4后，mysql的所有index的最大长度都不能超过190个字符
 * 我们的设计原则是不通过mysqld修改数据库默认设置来实现所有需求
